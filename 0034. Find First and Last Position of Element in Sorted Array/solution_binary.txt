@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+      std::vector<int>::iterator beg = nums.begin(), end = nums.end(), mid;
+      while (beg != end) {
+        mid = beg + (end - beg) / 2;
+        if (*mid < target)
+          beg = mid + 1;
+        else
+          end = mid;
+      }
+      int ans1 = -1;
+      if (beg != nums.end() && *beg == target) {
+        ans1 = beg - nums.begin();
+      }
+      beg = nums.begin();
+      end = nums.end();
+      while (beg != end) {
+        mid = beg + (end - beg) / 2;
+        if (*mid <= target)
+          beg = mid + 1;
+        else
+          end = mid;
+      }
+      int ans2 = -1;
+      if (beg != nums.begin() && *(beg - 1) == target) {
+        ans2 = beg - nums.begin() - 1;
+      }
+      return {ans1, ans2};
+    }
+};
