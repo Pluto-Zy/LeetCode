@@ -1,0 +1,21 @@
+class Solution {
+public:
+  std::vector<std::vector<int>> merge(std::vector<std::vector<int>>& intervals) {
+    std::sort(intervals.begin(), intervals.end(), [](const std::vector<int>& lhs, const std::vector<int>& rhs) {
+      return std::tie(lhs[0], lhs[1]) < std::tie(rhs[0], rhs[1]);
+    });
+    std::vector<std::vector<int>> result;
+    int beg = intervals[0][0], end = intervals[0][1];
+    for (int i = 1; i < intervals.size(); ++i) {
+      if (end >= intervals[i][0]) {
+        end = std::max(intervals[i][1], end);
+      } else {
+        result.emplace_back(std::vector<int>{beg, end});
+        beg = intervals[i][0];
+        end = intervals[i][1];
+      }
+    }
+    result.emplace_back(std::vector<int>{beg, end});
+    return result;
+  }
+};
