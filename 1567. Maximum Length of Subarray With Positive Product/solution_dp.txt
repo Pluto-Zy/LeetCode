@@ -1,0 +1,26 @@
+class Solution {
+public:
+  int getMaxLen(vector<int>& nums) {
+    // dp_positive[i]: 以 nums[i] 结尾的乘积为正数的最长子数组长度
+    // dp_negative[i]: 以 nums[i] 结尾的乘积为负数的最长子数组长度
+    int _positive_last = nums[0] > 0 ? 1 : 0;
+    int _negative_last = nums[0] < 0 ? 1 : 0;
+    int _result = _positive_last;
+    for (int i = 1; i < nums.size(); ++i) {
+      if (nums[i] > 0) {
+        // 不改变正负性
+        ++_positive_last;
+        if (_negative_last > 0)
+          ++_negative_last;
+      } else if (nums[i] < 0) {
+        int _temp = _positive_last;
+        _positive_last = _negative_last > 0 ? _negative_last + 1 : 0;
+        _negative_last = _temp + 1;
+      } else {
+        _positive_last = _negative_last = 0;
+      }
+      _result = std::max(_result, _positive_last);
+    }
+    return _result;
+  }
+};
